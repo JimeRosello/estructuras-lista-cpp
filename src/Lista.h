@@ -1,6 +1,8 @@
 #ifndef LISTA_H_
 #define LISTA_H_
 
+#include "Nodo.h"
+
 /*
  * Una Lista es una colección dinámica de elementos dispuestos en una secuencia.
  *
@@ -10,7 +12,15 @@
  * Tiene un cursor que permite recorrer todos los elementos secuencialmente.
  *
  */
-template <class T> class Lista {
+template<class T> class Lista {
+
+    private:
+
+        Nodo<T>* primero;
+
+        unsigned int tamanio;
+
+        Nodo<T>* cursor;
 
     public:
 
@@ -91,7 +101,162 @@ template <class T> class Lista {
          * post: libera los recursos asociados a la Lista.
          */
         ~Lista();
+
+    private:
+
 };
 
+template<class T> Lista<T>::Lista() {
+
+    this->primero = NULL;
+    this->cursor = NULL;
+    this->tamanio = 0;
+}
+;
+
+template<class T> bool Lista<T>::estaVacia() {
+
+    return (this->tamanio == 0);
+}
+
+template<class T> unsigned int Lista<T>::contarElementos() {
+
+    return this->tamanio;
+}
+
+template<class T> void Lista<T>::agregar(T elemento) {
+
+    this->agregar(elemento, this->tamanio + 1);
+}
+
+template<class T> void Lista<T>::agregar(T elemento, unsigned int posicion) {
+
+    if ((posicion > 0) && (posicion <= this->tamanio + 1)) {
+
+        Nodo<T>* aAgregar = new Nodo<T>(elemento);
+
+        if (this->primero == NULL) {
+
+            this->primero = aAgregar;
+
+        } else {
+
+            Nodo<T>* anterior = this->primero;
+            for (unsigned int i = 1; i < posicion; i++) {
+
+                anterior = anterior->obtenerSiguiente();
+            }
+
+            anterior->cambiarSiguiente(aAgregar);
+            aAgregar->cambiarSiguiente(anterior->obtenerSiguiente());
+        }
+
+        this->tamanio++;
+    }
+
+}
+
+template<class T> T Lista<T>::obtener(unsigned int posicion) {
+
+    T elemento;
+
+    if ((posicion > 0) && (posicion <= this->tamanio)) {
+
+        Nodo<T>* actual = this->primero;
+
+        for (unsigned int i = 1; i < posicion; i++) {
+
+            actual = actual->obtenerSiguiente();
+        }
+
+        elemento = actual->obtenerDato();
+    }
+
+    return elemento;
+}
+
+template<class T> void Lista<T>::asignar(T elemento, unsigned int posicion) {
+
+    if ((posicion > 0) && (posicion <= this->tamanio)) {
+
+        Nodo<T>* actual = this->primero;
+
+        for (unsigned int i = 1; i < posicion; i++) {
+
+            actual = actual->obtenerSiguiente();
+        }
+
+        actual->cambiarDato(elemento);
+    }
+}
+
+template<class T> void Lista<T>::remover(unsigned int posicion) {
+
+    if ((posicion > 0) && (posicion <= this->tamanio)) {
+
+        Nodo<T>* aRemover;
+
+        if (posicion == 1) {
+
+            aRemover = this->primero;
+
+        } else {
+
+            Nodo<T>* anterior = this->primero;
+            for (unsigned int i = 1; i < posicion - 1; i++) {
+
+                anterior = anterior->obtenerSiguiente();
+            }
+            aRemover = anterior->obtenerSiguiente();
+            anterior->cambiarSiguiente(aRemover->obtenerSiguiente());
+        }
+
+        delete aRemover;
+        this->tamanio--;
+    }
+}
+
+template<class T> void Lista<T>::iniciarCursor() {
+
+    this->cursor = NULL;
+}
+
+template<class T> bool Lista<T>::avanzarCursor() {
+
+    if (this->cursor == NULL) {
+
+        this->cursor = this->primero;
+
+    } else {
+
+        this->cursor = this->cursor->obtenerSiguiente();
+    }
+
+    /* pudo avanzar si el cursor ahora apunta a un nodo */
+    return (this->cursor != NULL);
+}
+
+template<class T> T Lista<T>::obtenerCursor() {
+
+    T elemento;
+
+    if (this->cursor != NULL) {
+
+        elemento = this->cursor->obtenerDato();
+    }
+
+    return elemento;
+}
+
+template<class T> Lista<T>::~Lista() {
+
+    while (this->primero != NULL) {
+
+        Nodo<T>* aBorrar = this->primero;
+        this->primero = this->primero->obtenerSiguiente();
+
+        delete aBorrar;
+    }
+}
 
 #endif /* LISTA_H_ */

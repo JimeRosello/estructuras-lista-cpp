@@ -28,7 +28,7 @@ template<class T> class Nodo {
         /*
          * post: devuelve el valor del dato.
          */
-        T getDato() {
+        T obtenerDato() {
 
             return this->dato;
         }
@@ -36,7 +36,7 @@ template<class T> class Nodo {
         /*
          * post: cambia el valor del dato.
          */
-        void setDato(T nuevoDato) {
+        void cambiarDato(T nuevoDato) {
 
             this->dato = nuevoDato;
         }
@@ -44,7 +44,7 @@ template<class T> class Nodo {
         /*
          * post: devuelve el siguiente Nodo.
          */
-        Nodo<T>* getSiguiente() {
+        Nodo<T>* obtenerSiguiente() {
 
             return this->siguiente;
         }
@@ -52,7 +52,7 @@ template<class T> class Nodo {
         /*
          * post: cambia el siguiente Nodo por nuevoSiguiente.
          */
-        void setSiguiente(Nodo<T>* nuevoSiguiente) {
+        void cambiarSiguiente(Nodo<T>* nuevoSiguiente) {
 
             this->siguiente = nuevoSiguiente;
         }
