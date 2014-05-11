@@ -36,6 +36,13 @@ Diseñar e implementar el TDA Lista.
     
 ## Desarrollo
 
+Definición basada en templates de la clase Lista<T>.
+
+Provee un cursor que permite recorrer todos los elementos secuencialmente.
+
+Implementación simplemente enlaza. 
+
+    *
 
 
     
