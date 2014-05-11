@@ -42,11 +42,11 @@ Provee un cursor que permite recorrer todos los elementos secuencialmente.
 
 Implementación simplemente enlaza. 
 
-* `Lista<T>` : [`Lista.h`](../main/src/Lista.h)
+* `Lista<T>` : [Lista.h](../master/src/Lista.h)
     
-* `Nodo<T>` : [`Nodo.h`](../main/src/Nodo.h)
+* `Nodo<T>` : [Nodo.h](../master/src/Nodo.h)
     
-* Ejemplo : [`ejemplo.cpp`](../main/src/ejemplo.cpp)
+* Ejemplo : [ejemplo.cpp](../master/src/ejemplo.cpp)
 
 
     
