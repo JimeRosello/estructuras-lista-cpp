@@ -40,7 +40,7 @@ template<class T> class Lista {
         unsigned int contarElementos();
 
         /*
-         * post: agrega el elemento al final de la Lista, la posición:
+         * post: agrega el elemento al final de la Lista, en la posición:
          *       contarElementos() + 1.
          */
         void agregar(T elemento);
@@ -102,17 +102,23 @@ template<class T> class Lista {
          */
         ~Lista();
 
+
+
     private:
 
+        /*
+         * pre : posición pertenece al intervalo: [1, contarElementos()]
+         * post: devuelve el nodo en la posición indicada.
+         */
+        Nodo<T>* obtenerNodo(unsigned int posicion); // NOTA: primitiva PRIVADA
 };
 
 template<class T> Lista<T>::Lista() {
 
     this->primero = NULL;
-    this->cursor = NULL;
     this->tamanio = 0;
+    this->cursor = NULL;
 }
-;
 
 template<class T> bool Lista<T>::estaVacia() {
 
@@ -133,25 +139,24 @@ template<class T> void Lista<T>::agregar(T elemento, unsigned int posicion) {
 
     if ((posicion > 0) && (posicion <= this->tamanio + 1)) {
 
-        Nodo<T>* aAgregar = new Nodo<T>(elemento);
+        Nodo<T>* nuevo = new Nodo<T>(elemento);
 
-        if (this->primero == NULL) {
+        if (posicion == 1) {
 
-            this->primero = aAgregar;
+            nuevo->cambiarSiguiente(this->primero);
+            this->primero = nuevo;
 
         } else {
 
-            Nodo<T>* anterior = this->primero;
-            for (unsigned int i = 1; i < posicion; i++) {
-
-                anterior = anterior->obtenerSiguiente();
-            }
-
-            anterior->cambiarSiguiente(aAgregar);
-            aAgregar->cambiarSiguiente(anterior->obtenerSiguiente());
+            Nodo<T>* anterior = this->obtenerNodo(posicion - 1);
+            nuevo->cambiarSiguiente(anterior->obtenerSiguiente());
+            anterior->cambiarSiguiente(nuevo);
         }
 
         this->tamanio++;
+
+        /* cualquier recorrido actual queda invalidado */
+        this->iniciarCursor();
     }
 
 }
@@ -162,14 +167,7 @@ template<class T> T Lista<T>::obtener(unsigned int posicion) {
 
     if ((posicion > 0) && (posicion <= this->tamanio)) {
 
-        Nodo<T>* actual = this->primero;
-
-        for (unsigned int i = 1; i < posicion; i++) {
-
-            actual = actual->obtenerSiguiente();
-        }
-
-        elemento = actual->obtenerDato();
+        elemento = this->obtenerNodo(posicion)->obtenerDato();
     }
 
     return elemento;
@@ -179,14 +177,7 @@ template<class T> void Lista<T>::asignar(T elemento, unsigned int posicion) {
 
     if ((posicion > 0) && (posicion <= this->tamanio)) {
 
-        Nodo<T>* actual = this->primero;
-
-        for (unsigned int i = 1; i < posicion; i++) {
-
-            actual = actual->obtenerSiguiente();
-        }
-
-        actual->cambiarDato(elemento);
+        this->obtenerNodo(posicion)->cambiarDato(elemento);
     }
 }
 
@@ -194,25 +185,25 @@ template<class T> void Lista<T>::remover(unsigned int posicion) {
 
     if ((posicion > 0) && (posicion <= this->tamanio)) {
 
-        Nodo<T>* aRemover;
+        Nodo<T>* removido;
 
         if (posicion == 1) {
 
-            aRemover = this->primero;
+            removido = this->primero;
+            this->primero = removido->obtenerSiguiente();
 
         } else {
 
-            Nodo<T>* anterior = this->primero;
-            for (unsigned int i = 1; i < posicion - 1; i++) {
-
-                anterior = anterior->obtenerSiguiente();
-            }
-            aRemover = anterior->obtenerSiguiente();
-            anterior->cambiarSiguiente(aRemover->obtenerSiguiente());
+            Nodo<T>* anterior = this->obtenerNodo(posicion - 1);
+            removido = anterior->obtenerSiguiente();
+            anterior->cambiarSiguiente(removido->obtenerSiguiente());
         }
 
-        delete aRemover;
+        delete removido;
         this->tamanio--;
+
+        /* cualquier recorrido actual queda invalidado */
+        this->iniciarCursor();
     }
 }
 
@@ -257,6 +248,17 @@ template<class T> Lista<T>::~Lista() {
 
         delete aBorrar;
     }
+}
+
+template<class T> Nodo<T>* Lista<T>::obtenerNodo(unsigned int posicion) {
+
+    Nodo<T>* actual = this->primero;
+    for (unsigned int i = 1; i < posicion; i++) {
+
+        actual = actual->obtenerSiguiente();
+    }
+
+    return actual;
 }
 
 #endif /* LISTA_H_ */
