@@ -30,6 +30,12 @@ template<class T> class Lista {
         Lista();
 
         /*
+         * post: Lista que tiene los mismos elementos que otraLista.
+         *       La instancia resulta en una copia de otraLista.
+         */
+        Lista(Lista<T>& otraLista);
+
+        /*
          * post: indica si la Lista tiene algún elemento.
          */
         bool estaVacia();
@@ -118,6 +124,19 @@ template<class T> Lista<T>::Lista() {
     this->primero = NULL;
     this->tamanio = 0;
     this->cursor = NULL;
+}
+
+template<class T> Lista<T>::Lista(Lista<T>& otraLista) {
+
+    this->primero = NULL;
+    this->tamanio = 0;
+    this->cursor = NULL;
+
+    /* copia los elementos de otraLista */
+    otraLista.iniciarCursor();
+    while (otraLista.avanzarCursor()) {
+        this->agregar(otraLista.obtenerCursor());
+    }
 }
 
 template<class T> bool Lista<T>::estaVacia() {

@@ -136,3 +136,20 @@ TEST( ListaIntTest, removerMultiplesElementos ) {
     ASSERT_EQ( 6, notas.obtener(2) );
     ASSERT_EQ( 4, notas.obtener(3) );
 }
+
+
+TEST( ListaIntTest, constructorDeCopia ) {
+
+    Lista<int> original;
+    original.agregar(5);
+    original.agregar(4);
+    original.agregar(3);
+    original.agregar(2);
+    original.agregar(1);
+
+    Lista<int> copia(original);
+
+    copia.agregar(0);
+    ASSERT_EQ(5, original.contarElementos());
+    ASSERT_EQ(6, copia.contarElementos());
+}
