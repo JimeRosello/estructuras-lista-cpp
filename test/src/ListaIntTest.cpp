@@ -153,3 +153,18 @@ TEST( ListaIntTest, constructorDeCopia ) {
     ASSERT_EQ(5, original.contarElementos());
     ASSERT_EQ(6, copia.contarElementos());
 }
+
+TEST( ListaIntTest, agregarTodosLosElementosDeOtraLista ) {
+
+    Lista<int> notas;
+    notas.agregar(8);
+    notas.agregar(4);
+    notas.agregar(9);
+
+    Lista<int> notasTotales;
+    notasTotales.agregar(2);
+
+    notasTotales.agregar(notas);
+
+    ASSERT_EQ(4, notasTotales.contarElementos());
+}

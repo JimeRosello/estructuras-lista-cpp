@@ -59,6 +59,12 @@ template<class T> class Lista {
         void agregar(T elemento, unsigned int posicion);
 
         /*
+         * post: agrega todos los elementos de otraLista
+         *       a partir de la posición contarElementos() + 1.
+         */
+        void agregar(Lista<T> &otraLista);
+
+        /*
          * pre : posición pertenece al intervalo: [1, contarElementos()]
          * post: devuelve el elemento en la posición indicada.
          */
@@ -108,8 +114,6 @@ template<class T> class Lista {
          */
         ~Lista();
 
-
-
     private:
 
         /*
@@ -133,10 +137,7 @@ template<class T> Lista<T>::Lista(Lista<T>& otraLista) {
     this->cursor = NULL;
 
     /* copia los elementos de otraLista */
-    otraLista.iniciarCursor();
-    while (otraLista.avanzarCursor()) {
-        this->agregar(otraLista.obtenerCursor());
-    }
+    this->agregar(otraLista);
 }
 
 template<class T> bool Lista<T>::estaVacia() {
@@ -178,6 +179,14 @@ template<class T> void Lista<T>::agregar(T elemento, unsigned int posicion) {
         this->iniciarCursor();
     }
 
+}
+
+template<class T> void Lista<T>::agregar(Lista<T> &otraLista) {
+
+    otraLista.iniciarCursor();
+    while (otraLista.avanzarCursor()) {
+        this->agregar(otraLista.obtenerCursor());
+    }
 }
 
 template<class T> T Lista<T>::obtener(unsigned int posicion) {
