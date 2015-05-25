@@ -48,5 +48,14 @@ Implementación simplemente enlaza.
     
 * Ejemplo : [ejemplo.cpp](../master/src/ejemplo.cpp)
 
+## Extensión
+
+Extensión de la implementación que utiliza excepciones para manipular 
+situaciones anómalas en las cuales se rompe el contrato.
+
+* `Lista<T>` : [Lista.h](../excepciones/src/Lista.h)
+    
+
+
 
     
