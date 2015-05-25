@@ -123,6 +123,34 @@ template<class T> class Lista {
         Nodo<T>* obtenerNodo(unsigned int posicion); // NOTA: primitiva PRIVADA
 };
 
+/*
+ * Excepción que representa el intento de acceder a un elemento
+ * que no existe dentro de la Lista.
+ */
+class ExcepcionElementoInexistente {
+
+    private:
+        unsigned int posicion;
+
+    public:
+        /*
+         * post: Excepción creada a partir de la posición inválida a la
+         *       que se intentó acceder.
+         */
+        ExcepcionElementoInexistente(unsigned int posicion) {
+
+            this->posicion = posicion;
+        }
+
+        /*
+         * post: devuelve la posición inválida a la que se intentó acceder.
+         */
+        unsigned int obtenerPosicionInvalida() {
+
+            return this->posicion;
+        }
+};
+
 template<class T> Lista<T>::Lista() {
 
     this->primero = NULL;
@@ -177,14 +205,19 @@ template<class T> void Lista<T>::agregar(T elemento, unsigned int posicion) {
 
         /* cualquier recorrido actual queda invalidado */
         this->iniciarCursor();
-    }
 
+    } else {
+
+        throw ExcepcionElementoInexistente(posicion);
+    }
 }
 
 template<class T> void Lista<T>::agregar(Lista<T> &otraLista) {
 
     otraLista.iniciarCursor();
+
     while (otraLista.avanzarCursor()) {
+
         this->agregar(otraLista.obtenerCursor());
     }
 }
@@ -196,6 +229,10 @@ template<class T> T Lista<T>::obtener(unsigned int posicion) {
     if ((posicion > 0) && (posicion <= this->tamanio)) {
 
         elemento = this->obtenerNodo(posicion)->obtenerDato();
+
+    } else {
+
+        throw ExcepcionElementoInexistente(posicion);
     }
 
     return elemento;
@@ -206,6 +243,10 @@ template<class T> void Lista<T>::asignar(T elemento, unsigned int posicion) {
     if ((posicion > 0) && (posicion <= this->tamanio)) {
 
         this->obtenerNodo(posicion)->cambiarDato(elemento);
+
+    } else {
+
+        throw ExcepcionElementoInexistente(posicion);
     }
 }
 
@@ -232,6 +273,10 @@ template<class T> void Lista<T>::remover(unsigned int posicion) {
 
         /* cualquier recorrido actual queda invalidado */
         this->iniciarCursor();
+
+    } else {
+
+        throw ExcepcionElementoInexistente(posicion);
     }
 }
 
@@ -262,6 +307,10 @@ template<class T> T Lista<T>::obtenerCursor() {
     if (this->cursor != NULL) {
 
         elemento = this->cursor->obtenerDato();
+
+    } else {
+
+        throw ExcepcionElementoInexistente(0);
     }
 
     return elemento;

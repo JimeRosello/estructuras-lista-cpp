@@ -50,6 +50,14 @@ TEST( ListaIntTest, agregarElementosConRepetidos ) {
     ASSERT_EQ( 7, edades.contarElementos() );
 }
 
+TEST( ListaIntTest, agregarElementoEnPosicionInvalizaLanzaExcepcion ) {
+
+    Lista<int> edades;
+    edades.agregar(25);
+
+    ASSERT_THROW( edades.agregar(35, 4), ExcepcionElementoInexistente );
+}
+
 TEST( ListaIntTest, obtenerElementoUnico ) {
 
     Lista<int> edades;
@@ -58,6 +66,15 @@ TEST( ListaIntTest, obtenerElementoUnico ) {
     int primero = edades.obtener(1);
 
     ASSERT_EQ( 3, primero);
+}
+
+TEST( ListaIntTest, obtenerElementoEnPosicionInexistenteLanzaExcepcion ) {
+
+    Lista<int> edades;
+    edades.agregar(6);
+    edades.agregar(7);
+
+    ASSERT_THROW(edades.obtener(4), ExcepcionElementoInexistente);
 }
 
 TEST( ListaIntTest, removerUnicoElemento ) {
@@ -137,6 +154,13 @@ TEST( ListaIntTest, removerMultiplesElementos ) {
     ASSERT_EQ( 4, notas.obtener(3) );
 }
 
+TEST( ListaIntTest, removerElementoInexistenteLanzaExcepcion ) {
+
+    Lista<int> notas;
+    notas.agregar(7);
+
+    ASSERT_THROW( notas.remover(4), ExcepcionElementoInexistente );
+}
 
 TEST( ListaIntTest, constructorDeCopia ) {
 
@@ -150,8 +174,8 @@ TEST( ListaIntTest, constructorDeCopia ) {
     Lista<int> copia(original);
 
     copia.agregar(0);
-    ASSERT_EQ(5, original.contarElementos());
-    ASSERT_EQ(6, copia.contarElementos());
+    ASSERT_EQ( 5, original.contarElementos() );
+    ASSERT_EQ( 6, copia.contarElementos() );
 }
 
 TEST( ListaIntTest, agregarTodosLosElementosDeOtraLista ) {
@@ -166,5 +190,42 @@ TEST( ListaIntTest, agregarTodosLosElementosDeOtraLista ) {
 
     notasTotales.agregar(notas);
 
-    ASSERT_EQ(4, notasTotales.contarElementos());
+    ASSERT_EQ( 4, notasTotales.contarElementos() );
+}
+
+TEST( ListaIntTest, asignarElemento ) {
+
+    Lista<int> notas;
+    notas.agregar(9);
+    notas.agregar(3);
+    notas.agregar(8);
+
+    notas.asignar(7, 2);
+
+    ASSERT_EQ( 9, notas.obtener(1) );
+    ASSERT_EQ( 7, notas.obtener(2) );
+    ASSERT_EQ( 8, notas.obtener(3) );
+}
+
+TEST( ListaIntTest, asignarElementoEnPosicionInvalidaLanzaExcepcion ) {
+
+    Lista<int> notas;
+    notas.agregar(7);
+    notas.agregar(9);
+
+    ASSERT_THROW( notas.asignar(9, 5), ExcepcionElementoInexistente );
+}
+
+TEST( ListaIntTest, obtenerCursorEnPosicionInvalidaLanzaExcepcion ) {
+
+    Lista<int> notas;
+    notas.agregar(8);
+    notas.agregar(2);
+
+    notas.iniciarCursor();
+    notas.avanzarCursor();
+    notas.avanzarCursor();
+    notas.avanzarCursor();
+
+    ASSERT_THROW( notas.obtenerCursor(), ExcepcionElementoInexistente );
 }

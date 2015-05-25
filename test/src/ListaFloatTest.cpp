@@ -4,26 +4,23 @@
 
 using namespace std;
 
-TEST( ListaFloatTest, agregarEnPosicionCeroEsIgnorado ) {
+TEST( ListaFloatTest, agregarEnPosicionCeroLanzaExcepcion ) {
 
     Lista<float> temperaturas;
     temperaturas.agregar(24.2);
     temperaturas.agregar(23.5);
     temperaturas.agregar(14.1);
 
-    temperaturas.agregar(34.6, 0);
+    ASSERT_THROW( temperaturas.agregar(34.6, 0), ExcepcionElementoInexistente );
 
-    ASSERT_EQ( 3, temperaturas.contarElementos() );
 }
 
-TEST( ListaFloatTest, agregarEnPosicionMasGrandeQueElTamanioMasUnoEsIgnorado ) {
+TEST( ListaFloatTest, agregarEnPosicionMasGrandeQueElTamanioMasUnoLanzaExcepcion ) {
 
     Lista<float> temperaturas;
     temperaturas.agregar(24.2);
     temperaturas.agregar(23.5);
     temperaturas.agregar(14.1);
 
-    temperaturas.agregar(34.6, 5);
-
-    ASSERT_EQ( 3, temperaturas.contarElementos() );
+    ASSERT_THROW( temperaturas.agregar(34.6, 5), ExcepcionElementoInexistente );
 }
