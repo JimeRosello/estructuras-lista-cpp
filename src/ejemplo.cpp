@@ -29,5 +29,15 @@ int main() {
 
     cout << "Promedio: " << promedio / notas.contarElementos() << endl;
 
+    try {
+
+        notas.remover(0);
+
+    } catch (ExcepcionElementoInexistente excepcion) {
+
+        cout << "No existe el elemento en la posición: "
+             << excepcion.obtenerPosicionInvalida() << endl;
+    }
+
 	return 0;
 }
